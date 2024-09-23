@@ -2,6 +2,7 @@ const REPS = 10000;
 const PLAYERS_PER_EVENT = 1904;
 const ROUNDS = 9;
 const CUT_TO_TOP = 64;
+const DNF_CHANCE = 0.01;
 
 type Event = number[];
 type EventResults = Record<number, {score: number, count: number}>;
@@ -12,7 +13,21 @@ function generate_event(): Event {
 
 function simulate_round(event: Event): void {
   for(let i=0; i<event.length; i+=2) {
+    const dnfRoll = Math.random();
     const randResult = Math.random();
+
+    if(dnfRoll < DNF_CHANCE) {
+      // Finished only one game!
+      if(randResult < 0.5) {
+        // 50% chance of 3-0
+        event[i] += 3;
+      } else {
+        // 50% chance of 0-3
+        event[i+1] += 3;
+      }
+      continue;
+    }
+
     if(randResult < 0.5) {
       // 50% chance of 3-3
       event[i] += 3;
