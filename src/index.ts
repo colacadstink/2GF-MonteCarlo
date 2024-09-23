@@ -2,7 +2,13 @@ const REPS = 10000;
 const PLAYERS_PER_EVENT = 1904;
 const ROUNDS = 9;
 const CUT_TO_TOP = 64;
+
 const DNF_CHANCE = 0.01;
+const SPLIT_MATCH_CHANCE = 0.495;
+// const TWO_OH_CHANCE = 1 - DNF_CHANCE - SPLIT_MATCH_CHANCE;
+
+const GAME_WIN_POINTS = 3;
+const TWO_OH_POINTS = 7;
 
 type Event = number[];
 type EventResults = Record<number, {score: number, count: number}>;
@@ -13,31 +19,27 @@ function generateEvent(): Event {
 
 function simulateRound(event: Event): void {
   for(let i=0; i<event.length; i+=2) {
-    const dnfRoll = Math.random();
     const randResult = Math.random();
+    const coinFlip = Math.random() > 0.5;
 
-    if(dnfRoll < DNF_CHANCE) {
+    if(randResult < DNF_CHANCE) {
       // Finished only one game!
-      if(randResult < 0.5) {
-        // 50% chance of 3-0
-        event[i] += 3;
+      if(coinFlip) {
+        event[i] += GAME_WIN_POINTS;
       } else {
-        // 50% chance of 0-3
-        event[i+1] += 3;
+        event[i+1] += GAME_WIN_POINTS;
       }
-      continue;
-    }
-
-    if(randResult < 0.5) {
-      // 50% chance of 3-3
-      event[i] += 3;
-      event[i+1] += 3;
-    } else if (randResult < 0.75) {
-      // 25% chance of 7-0
-      event[i] += 7;
+    } else if(randResult < DNF_CHANCE + SPLIT_MATCH_CHANCE) {
+      // 3-3
+      event[i] += GAME_WIN_POINTS;
+      event[i+1] += GAME_WIN_POINTS;
     } else {
-      // 25% chance of 0-7
-      event[i+1] += 7;
+      // 7-0
+      if(coinFlip) {
+        event[i] += TWO_OH_POINTS;
+      } else {
+        event[i+1] += TWO_OH_POINTS;
+      }
     }
   }
   event.sort((a, b) => b-a);
