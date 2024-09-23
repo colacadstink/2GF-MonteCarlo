@@ -7,11 +7,11 @@ const DNF_CHANCE = 0.01;
 type Event = number[];
 type EventResults = Record<number, {score: number, count: number}>;
 
-function generate_event(): Event {
+function generateEvent(): Event {
   return Array(PLAYERS_PER_EVENT).fill(0);
 }
 
-function simulate_round(event: Event): void {
+function simulateRound(event: Event): void {
   for(let i=0; i<event.length; i+=2) {
     const dnfRoll = Math.random();
     const randResult = Math.random();
@@ -44,9 +44,9 @@ function simulate_round(event: Event): void {
 }
 
 function simulateEvent(): Event {
-  const event = generate_event();
+  const event = generateEvent();
   for(let i=0; i<ROUNDS; i++) {
-    simulate_round(event);
+    simulateRound(event);
   }
   return event;
 }
