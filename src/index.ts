@@ -3,9 +3,10 @@ const PLAYERS_PER_EVENT = 1904;
 const ROUNDS = 9;
 const CUT_TO_TOP = 64;
 
-const DNF_CHANCE = 0.01;
-const SPLIT_MATCH_CHANCE = 0.495;
+const DNF_CHANCE = 0.009;
+const SPLIT_MATCH_CHANCE = 0.425;
 // const TWO_OH_CHANCE = 1 - DNF_CHANCE - SPLIT_MATCH_CHANCE;
+// TWO_OH_CHANCE + DNF_CHANCE = 0.5878
 
 const GAME_WIN_POINTS = 3;
 const TWO_OH_POINTS = 7;
@@ -71,7 +72,7 @@ function bucketResults(event: Event): EventResults {
 function getTopCut(results: EventResults) {
   const sortedBuckets = Object.values(results).sort((a, b) => b.score - a.score);
   let playersIn = sortedBuckets[0].count;
-  let lastPointsIn = -1;
+  let lastPointsIn = sortedBuckets[0].score;
   let i = 0;
   while(playersIn < CUT_TO_TOP) {
     lastPointsIn = sortedBuckets[i].score;
