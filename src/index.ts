@@ -1,5 +1,5 @@
 const REPS = 10000;
-const PLAYERS_PER_EVENT = 2048;
+const PLAYERS_PER_EVENT = 1904;
 const ROUNDS = 9;
 const CUT_TO_TOP = 64;
 
@@ -29,12 +29,10 @@ function simulate_round(event: Event): void {
 }
 
 function simulateEvent(): Event {
-  const start = Date.now();
   const event = generate_event();
   for(let i=0; i<ROUNDS; i++) {
     simulate_round(event);
   }
-  const end = Date.now();
   return event;
 }
 
