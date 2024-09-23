@@ -1,0 +1,37 @@
+{
+  "name": "2gf-monte-carlo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist/",
+    "lint": "eslint --fix .",
+    "prepublishOnly": "eslint . && tsc",
+    "test": "tsx src/index.ts",
+    "watch:build": "tsc -w"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@stylistic/eslint-plugin": "^1.4.1",
+    "@types/jest": "^29.5.10",
+    "@types/node": "^18.15.3",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "rimraf": "^5.0.5",
+    "tsx": "^4.19.1",
+    "typescript": "~5.2.2",
+    "undici": "^6.18.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Ben Harris (benharris5@gmail.com)",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "csv-writer": "^1.6.0"
+  }
+}
