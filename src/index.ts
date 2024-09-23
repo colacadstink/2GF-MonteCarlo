@@ -1,4 +1,4 @@
-const REPS = 10000;
+const REPS = 10_000;
 const PLAYERS_PER_EVENT = 1904;
 const ROUNDS = 9;
 const CUT_TO_TOP = 64;
@@ -11,6 +11,12 @@ const SPLIT_MATCH_CHANCE = 0.425;
 const GAME_WIN_POINTS = 3;
 const TWO_OH_POINTS = 7;
 
+const DRAW_PERCENT_TABLE: Record<number, number> = {
+  6: 0.004,
+  7: 0.013,
+  8: 0.020,
+};
+
 type Event = number[];
 type EventResults = Record<number, {score: number, count: number}>;
 
@@ -18,8 +24,17 @@ function generateEvent(): Event {
   return Array(PLAYERS_PER_EVENT).fill(0);
 }
 
-function simulateRound(event: Event): void {
+function simulateRound(event: Event, roundNumber: number): void {
+  const drawCount = (DRAW_PERCENT_TABLE[roundNumber] ?? 0) * event.length;
+
   for(let i=0; i<event.length; i+=2) {
+    if(i+1 <= drawCount) {
+      // console.log(event[i], event[i+1]);
+      event[i] += GAME_WIN_POINTS;
+      event[i+1] += GAME_WIN_POINTS;
+      continue;
+    }
+
     const randResult = Math.random();
     const coinFlip = Math.random() > 0.5;
 
@@ -49,7 +64,7 @@ function simulateRound(event: Event): void {
 function simulateEvent(): Event {
   const event = generateEvent();
   for(let i=0; i<ROUNDS; i++) {
-    simulateRound(event);
+    simulateRound(event, i);
   }
   return event;
 }
