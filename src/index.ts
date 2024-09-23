@@ -75,4 +75,13 @@ for(let i=0; i<REPS; i++) {
   topCutCounts[topCut]++;
 }
 
-console.log(topCutCounts);
+let curChance = 0;
+const topCutChances: Record<number, number> = {};
+for(const entry of Object.entries(topCutCounts).sort((a,b) => {
+  return Number(a[0]) - Number(b[0]);
+})) {
+  curChance += entry[1];
+  topCutChances[Number(entry[0])] = (curChance / REPS);
+}
+
+console.log(topCutChances);
